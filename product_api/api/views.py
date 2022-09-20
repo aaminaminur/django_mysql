@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from .serializers import ProductsSerializer
+from .models import Products
 
 # Create your views here.
 
@@ -14,3 +16,9 @@ def apiOverview(request):
         'delete':'/product-delete/<int:id>',
     }
     return Response(api_urls)
+
+@api_view(['GET'])
+def showProducts(request):
+    products = Products.objects.all()
+    ser = ProductsSerializer(products, many=True)
+    return Response(ser.data)
